@@ -1,0 +1,348 @@
+<div class="card">
+  <p-toast></p-toast>
+  <p-toolbar styleClass="mb-2 gap-2">
+    <ng-template pTemplate="end">
+      <p-button label="Ajouter un prospect" icon="pi pi-plus" class="p-button-success mr-2"
+        (click)="newProspect()"></p-button>
+    </ng-template>
+  </p-toolbar>
+  <p-table [value]="prospects" dataKey="_id" editMode="row" [paginator]="true" [rows]="20"
+    [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped" [expandedRowKeys]="expandedRows" >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 1rem">Trigramme</th>
+        <th style="width: auto">Nom</th>
+        <th style="width: auto">Prénom</th>
+        <th style="width: auto">Profil</th>
+        <th style="width: 2%">CV</th>
+        <th style="width: 10%">Date de contact</th>
+        <th style="width: 10%">Date d'entretien</th>
+        <th style="width: 2%">Grille</th>
+        <th style="width: 2%">GO / NOGO</th>
+        <th style="width: auto">BUM</th>
+        <th style="width: 2%">PR</th>
+        <th style="width: 2%">DC</th>
+        <th style="width: 2%">Push / Qualif</th>
+        <th style="width: 2%"></th> <!-- bouton modif -->
+        <th style="width: 2%"></th> <!-- bouton archive -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prospect let-ri="rowIndex" let-editing="editing">
+      <tr [pEditableRow]="prospect">
+        <td>
+          {{ prospect.trigramme }}
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="prospect.lastName" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ prospect.lastName }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="prospect.firstName" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ prospect.firstName }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="prospect.profil" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ prospect.profil }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          @if(prospect.cv !== null && prospect.cv !== undefined) {
+          <span>
+            <i class="pi pi-file-check" style="color: greenyellow"></i>
+          </span>
+          } @else {
+          <span>
+            <i class="pi pi-file-plus" style="color: red"></i>
+          </span>
+          }
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="prospect.dateContact" dateFormat="dd-MM-yyyy" appendTo="body"></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ prospect.dateContact | date : "dd-MM-yyyy" }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="prospect.dateEntretien" dateFormat="dd-MM-yyyy" appendTo="body"/>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ prospect.dateEntretien | date : "dd-MM-yyyy" }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-fileUpload mode="basic" name="grille" chooseIcon="pi pi-download" accept=".pdf" maxFileSize="1000000"
+                (onSelect)="onUploadFile($event, 'grille')" chooseLabel="Importer la grille">
+              </p-fileUpload>
+            </ng-template>
+            <ng-template pTemplate="output">
+              @if(prospect.grille !== null && prospect.grille !== undefined) {
+              <span>
+                <i class="pi pi-file-check" style="color: greenyellow"></i>
+              </span>
+              } @else {
+              <span>
+                <i class="pi pi-file-plus" style="color: red"></i>
+              </span>
+              }
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          @if(prospect.bum !== null && prospect.bum !== undefined) {
+          <span>
+            <i class="pi pi-thumbs-up-fill" style="color: greenyellow"></i>
+          </span>
+          } @else {
+            <div class="flex justify-content-center gap-2">
+              <p-button severity="secondary" label="Go / NoGo" (click)="validatedBum($event)"
+                class="p-button-rounded p-button-text">
+              </p-button>
+            </div>
+          }
+        </td>
+        <td>
+          <span>{{ fullNameBum(prospect.bum) }}</span>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="number" [(ngModel)]="prospect.pr" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              @if(prospect.pr) {
+              <p-tag severity="success" value="{{ prospect.pr | currency : 'EUR' }}"></p-tag>
+              } @else {
+              <span class="noData"></span>
+              }
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-fileUpload mode="basic" name="dc" chooseIcon="pi pi-download" accept=".pdf" maxFileSize="1000000"
+                (onSelect)="onUploadFile($event, 'dc')" chooseLabel="Importer le DC">
+              </p-fileUpload>
+            </ng-template>
+            <ng-template pTemplate="output">
+              @if(prospect.dc !== null && prospect.dc !== undefined) {
+              <span>
+                <i class="pi pi-file-check" style="color: greenyellow"></i>
+              </span>
+              } @else {
+              <span>
+                <i class="pi pi-file-plus" style="color: red"></i>
+              </span>
+              }
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-button type="button" pRipple [pRowToggler]="prospect" [text]="true" [rounded]="true" [plain]="true"
+            icon="pi pi-shop" />
+        </td>
+        <td>
+          <div class="flex align-items-center justify-content-center gap-2">
+            @if(!editing) {
+            <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+            <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEdit(prospect)"
+              class="p-button-rounded p-button-text"></button>
+            } @else {
+            <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(prospect)"
+              class="p-button-rounded p-button-text p-button-success mr-2"></button>
+            <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+            <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+              (click)="onRowEditCancel(prospect, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+            }
+          </div>
+        </td>
+        <td>
+          <div class="flex justify-content-center gap-2">
+            <p-button severity="danger" icon="pi pi-trash" (click)="archiveProspect($event, prospect)"
+              class="p-button-rounded p-button-text">
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <!-- Tableau push/qualif -->
+    <ng-template pTemplate="rowexpansion" let-prospect>
+      <tr>
+        <td colspan="6"></td>
+        <td colspan="9">
+          <div class="p-3">
+            <p-table [value]="prospect.pushQalif" dataKey="client" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="client">Client <p-sortIcon field="client"></p-sortIcon></th>
+                  <th>Date de push</th>
+                  <th>Date retour</th>
+                  <th>Date qualif</th>
+                  <th></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-pushQualif let-ri="rowIndex">
+                <tr [pEditableRow]="pushQualif">
+                  <td>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <input type="text" [(ngModel)]="pushQualif.client" />
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ pushQualif.client }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-calendar [(ngModel)]="pushQualif.dateContact" dateFormat="dd-MM-yyyy" appendTo="body"></p-calendar>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ pushQualif.datePush | date : "dd-MM-yyyy" }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-calendar [(ngModel)]="pushQualif.dateContact" dateFormat="dd-MM-yyyy" appendTo="body"></p-calendar>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ pushQualif.datePushRetour | date : "dd-MM-yyyy" }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td>
+                    <p-cellEditor>
+                      <ng-template pTemplate="input">
+                        <p-calendar [(ngModel)]="pushQualif.dateContact" dateFormat="dd-MM-yyyy" appendTo="body"></p-calendar>
+                      </ng-template>
+                      <ng-template pTemplate="output">
+                        {{ pushQualif.dateQualif | date : "dd-MM-yyyy" }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                      @if(!expandedEditing) {
+                      <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+                      <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowExpandedEdit()"
+                        class="p-button-rounded p-button-text"></button>
+                      } @else {
+                      <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+                      <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowExpandedEditSave()"
+                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                      <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+                      <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                        (click)="onRowExpandedEditCancel(prospect, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr class="justify-content-center align-items-center">
+        <td colspan="13">Pas de données disponible</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- Dialog -->
+<p-dialog [style]="{ width: '600px' }" header="Ajouter un nouveau prospect" [modal]="true" [(visible)]="visible"
+  class="p-fluid">
+  <form #formProspect="ngForm">
+    <div class="">
+      <div class="flex gap-5 mt-1">
+        <div class="field">
+          <label for="lastName">Nom</label>
+          <input pInputText type="text" id="lastName" name="lastName" [(ngModel)]="lastName"
+            (ngModelChange)="generateTrigram()" required />
+          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && (formProspect.dirty || formProspect.touched)">Le nom est obligatoire.</small>
+        </div>
+        <div class="field">
+          <label for="firstName">Prénom</label>
+          <input pInputText type="text" id="firstName" name="firstName" [(ngModel)]="firstName"
+            (ngModelChange)="generateTrigram()" required />
+          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !firstName">Le prénom est
+            obligatoire.</small>
+        </div>
+      </div>
+
+      <div class="flex gap-4 mt-1">
+        <div class="field">
+          <label for="trigram">Trigramme</label>
+          <input pInputText type="text" id="trigram" name="trigram" [(ngModel)]="trigram" required (ngModelChange)="checkTrigram(trigram)"/>
+          <small class="message-error" *ngIf="trigramExist">Ce trigramme existe déjà, ajouter un caractére</small>
+        </div>
+        <div class="field">
+          <span class="font-bold block mb-2">Téléphone</span>
+          <p-inputMask [(ngModel)]="phone" name="phone" placeholder="00 11 22 33 44" mask="99 99 99 99 99" required />
+          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !phone">Le numéro de téléphone est
+            obligatoire.</small>
+        </div>
+      </div>
+      <div class="flex gap-5 mt-1">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="text" pInputText id="email" name="email" [(ngModel)]="email" required />
+          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !email">L'email est obligatoire.</small>
+        </div>
+        <div class="field">
+          <label for="profil">Profil</label>
+          <input id="profil" pInputText [(ngModel)]="profil" name="profil" required />
+          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !profil">Le profil est
+            obligatoire.</small>
+        </div>
+      </div>
+      <p-fileUpload mode="basic" name="cv" accept=".pdf" [maxFileSize]="1000000" (onSelect)="onUploadFile($event, 'cv')"
+        chooseLabel="Ajouter un CV" chooseIcon="pi pi-download">
+      </p-fileUpload>
+    </div>
+
+    <div class="flex gap-2 justify-content-end">
+      <div>
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-secondary"
+          (click)="visible = false"></button>
+      </div>
+      <div>
+        <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
+        <button pButton pRipple label="Ajouter" icon="pi pi-check" class="p-button-primary"
+          (click)="onSave(formProspect)" type="submit"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

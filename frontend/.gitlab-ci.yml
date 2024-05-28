@@ -1,0 +1,88 @@
+stages:
+  - build
+  - quality
+  - test
+  - deploy
+
+job_0:
+  stage: build
+  image: node:20-alpine
+  tags:
+    - docker
+  script:
+    - echo "Build stage docker image"
+    - node --version
+
+job_1:
+  stage: build
+  script:
+    - echo "Build stage"
+    - npm install --prefer-offline
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules
+
+lint:
+  stage: quality
+  needs:
+    - job_1
+  script:
+    - npm run lint
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules
+    policy: pull
+
+test-job1:
+  stage: test
+  needs:
+    - job_1
+  script:
+    - echo "This job tests something"
+
+test-job2:
+  stage: test
+  needs:
+    - job_1
+  script:
+    - echo "This job tests something, but takes more time than test-job1."
+    - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
+    - sleep 20
+
+.deploy:
+  stage: deploy
+  variables:
+    NODE_ENV: production
+  before_script:
+    - echo "Deploying to $CI_ENVIRONMENT_NAME"
+  script:
+    - echo "Deploying to $CI_ENVIRONMENT_NAME"
+
+deploy-prod:
+  extends: .deploy
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+
+deploy-dev:
+  extends: .deploy
+  variables:
+    NODE_ENV: development
+  script:
+    - echo "Deploying to $CI_ENVIRONMENT_NAME"
+    - echo "Making actions to deploy to dev"
+    - echo "Deployed to $CI_ENVIRONMENT_NAME"
+
+deploy-staging:
+  extends: .deploy
+  rules:
+    - when: manual
+      allow_failure: true
+  variables:
+    NODE_ENV: staging
+  script:
+    - echo "Deploying to $CI_ENVIRONMENT_NAME"
+    - echo "Making actions to deploy to staging"
+    - echo "Deployed to $CI_ENVIRONMENT_NAME"

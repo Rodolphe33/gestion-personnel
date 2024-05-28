@@ -1,0 +1,47 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+stages:
+- build
+- test
+- deploy
+
+# Inclure le template Auto-DevOps pour des configurations automatiques
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+
+# Configuration des jobs
+build:
+  stage: build
+  image: maven:3.8.5-jdk-17  # Utilisez l'image Docker Maven avec Java 17
+  script:
+    - mvn clean package  # Commande Maven pour compiler et empaqueter l'application
+  artifacts:
+    paths:
+      - target/*.jar  # Spécifie les artefacts à archiver (fichier JAR de l'application)
+
+test:
+  stage: test
+  image: maven:3.8.5-jdk-17
+  script:
+    - mvn test  # Exécute les tests Maven
+  artifacts:
+    reports:
+      junit: target/surefire-reports/*.xml  # Spécifie les rapports de tests à archiver
+
+deploy:
+  stage: deploy
+  image: openjdk:17-jdk  # Utilisez l'image Docker OpenJDK 17 pour le déploiement
+  script:
+    - java -jar target/*.jar  # Commande pour démarrer l'application Spring Boot
+  environment:
+    name: production  # Nom de l'environnement de déploiement
+  only:
+    - main  # Déployer uniquement à partir de la branche main
+
+include:
+- template: Auto-DevOps.gitlab-ci.yml
