@@ -3,7 +3,7 @@ package com.epsyl.eps.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.epsyl.eps.entities.FileStorageEntity;
+import com.epsyl.eps.entities.FileStorage;
 import com.epsyl.eps.services.FileStorageService;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 
 @RestController
-@RequestMapping("api/v1/files")
+@RequestMapping("/api/v1/files")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FileStorageController {
 
@@ -54,7 +54,7 @@ public class FileStorageController {
 
   @GetMapping("/download/{id}")
   public ResponseEntity<byte[]> downloadFile(@PathVariable String _id) {
-    FileStorageEntity fileStorage = fileStorageService.getFile(_id);
+    FileStorage fileStorage = fileStorageService.getFile(_id);
     if(fileStorage != null) {
       HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""  + fileStorage.getFilename() + "\"");

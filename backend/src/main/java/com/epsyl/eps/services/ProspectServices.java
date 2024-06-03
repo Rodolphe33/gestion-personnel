@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.epsyl.eps.entities.ProspectEntity;
+import com.epsyl.eps.entities.Prospect;
 import com.epsyl.eps.repositories.ProspectRepository;
 
 @Service
@@ -15,19 +15,19 @@ public class ProspectServices {
   @Autowired
   private ProspectRepository prospectRepository;
 
-  public List<ProspectEntity> allProspects() {
+  public List<Prospect> allProspects() {
     return prospectRepository.findAll();
   }
 
-  public Optional<ProspectEntity> getProspectByID(String _id) {
+  public Optional<Prospect> getProspectByID(String _id) {
     return prospectRepository.findById(_id);
   }
 
-  public ProspectEntity saveOrUpdateProspect(ProspectEntity prospect) {
+  public Prospect saveOrUpdateProspect(Prospect prospect) {
     return prospectRepository.save(prospect);
   }
 
-  public Optional<ProspectEntity> deleteProspectById(String _id) {
+  public Optional<Prospect> deleteProspectById(String _id) {
     return prospectRepository.findById(_id).flatMap(prospect -> {
       prospectRepository.deleteById(prospect.get_id());
       return Optional.of(prospect);

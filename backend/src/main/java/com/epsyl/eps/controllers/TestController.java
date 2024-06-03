@@ -24,23 +24,23 @@ public class TestController {
   @GetMapping("/rh")
   @PreAuthorize("hasRole('RH')")
   public String rhAccess() {
-      return "Rh Content.";
+    return "Rh Content.";
   }
   
   @GetMapping("/bum")
   @PreAuthorize("hasRole('BUM')")
   public String bumAccess() {
-      return "Rh Content.";
+    return "Bum Content.";
   }
   @GetMapping("/admin")
   @PreAuthorize("hasRole('ADMIN')")
   public String adminAccess() {
-      return "Admin Content.";
+    return "Admin Content.";
   }
 
   @GetMapping("/super_admin")
   @PreAuthorize("hasRole('SUPER_ADMIN')")
   public String superAdminAccess() {
-      return "Super Admin Content.";
+    return "Super Admin Content.";
   }
 }

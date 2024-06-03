@@ -1,6 +1,6 @@
 package com.epsyl.eps.services;
 
-import com.epsyl.eps.entities.FileStorageEntity;
+import com.epsyl.eps.entities.FileStorage;
 import com.epsyl.eps.repositories.FileStorageRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class FileStorageService {
   private FileStorageRepository fileStorageRepository;
 
   public String storeFile(MultipartFile file) throws IOException {
-    FileStorageEntity fileStorage = new FileStorageEntity();
+    FileStorage fileStorage = new FileStorage();
     fileStorage.setFilename(file.getOriginalFilename());
     fileStorage.setContentType(file.getContentType());
     fileStorage.setData(file.getBytes());
@@ -26,7 +26,7 @@ public class FileStorageService {
     return fileStorage.get_id();
   }
 
-  public FileStorageEntity getFile(String id) {
+  public FileStorage getFile(String id) {
     return fileStorageRepository.findById(id).orElse(null);
   }
 }

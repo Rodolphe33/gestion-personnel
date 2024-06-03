@@ -1,57 +1,70 @@
 package com.epsyl.eps.controllers;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.epsyl.eps.entities.UserEntity;
-import com.epsyl.eps.services.UserServices;
+import com.epsyl.eps.dtos.LoginRequestDto;
+import com.epsyl.eps.dtos.RegisterRequestDto;
+import com.epsyl.eps.dtos.UserResponseDto;
+import com.epsyl.eps.services.authentification.AuthService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class UsersController {
 
-  @Autowired
-  private UserServices userServices;
+  private final AuthService authService;
 
-  // GET api/v1/user/id
-  @RequestMapping("/{id}")
-  public ResponseEntity<UserEntity> getUser(@PathVariable String _id) {
-    Optional<UserEntity> user = userServices.getUserByID(_id);
-    if (user.isPresent()) {
-    return ResponseEntity.ok(user.get());
-    } else {
-      return ResponseEntity.notFound().build();
-    }
+  // POST api/v1/user/register
+  @PostMapping("/register")
+  public ResponseEntity<UserResponseDto> register(@RequestBody RegisterRequestDto user) {
+    return authService.register(user);
   }
 
-  // GET api/v1/user/all
-  @GetMapping("/all")
-  public Iterable<UserEntity> getUsers() {
-    return userServices.listAll();
+  // POST api/v1/user/login
+  @PostMapping("/login")
+  public ResponseEntity<UserResponseDto> login(@RequestBody LoginRequestDto user) {
+    return authService.login(user);
   }
 
-  // POST api/v1/user/save
-  @PostMapping("/save")
-  public UserEntity saveUser(@RequestBody UserEntity user) {
-    return userServices.saveOrUpdateUser(user);
-  }
+  // // GET api/v1/user/id
+  // @RequestMapping("/{id}")
+  // public ResponseEntity<User> getUser(@PathVariable String _id) {
+  //   Optional<User> user = userServices.getUserByID(_id);
+  //   if (user.isPresent()) {
+  //   return ResponseEntity.ok(user.get());
+  //   } else {
+  //     return ResponseEntity.notFound().build();
+  //   }
+  // }
 
-  // PUT api/v1/user/edit/id
-  @PutMapping("/edit/{id}")
-  public UserEntity updateUser(@RequestBody UserEntity user, @PathVariable String _id) {
-    user.set_id(_id);
-    userServices.saveOrUpdateUser(user);
-    return user;
-  }
+  // // GET api/v1/user/all
+  // @GetMapping("/all")
+  // public Iterable<User> getUsers() {
+  //   return userServices.listAll();
+  // }
 
-  // DELETE api/v1/user/delete/id
-  @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
-    userServices.deleteUser(userId);
-    return ResponseEntity.noContent().build();
-  }
+  // // POST api/v1/user/save
+  // @PostMapping("/save")
+  // public User saveUser(@RequestBody User user) {
+  //   return userServices.saveOrUpdateUser(user);
+  // }
+
+  // // PUT api/v1/user/edit/id
+  // @PutMapping("/edit/{id}")
+  // public User updateUser(@RequestBody User user, @PathVariable String _id) {
+  //   user.set_id(_id);
+  //   userServices.saveOrUpdateUser(user);
+  //   return user;
+  // }
+
+  // // DELETE api/v1/user/delete/id
+  // @DeleteMapping("/delete/{id}")
+  // public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+  //   userServices.deleteUser(userId);
+  //   return ResponseEntity.noContent().build();
+  // }
 }
