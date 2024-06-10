@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.epsyl.eps.configuration_global.ObjectIdDeserrializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 public class Prospect {
 
   @Id
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
   public String _id;
 
   public String firstName;
@@ -42,13 +45,13 @@ public class Prospect {
 
   public String statutProspect;
 
-  public String bum;
+  public String bum; // ObjectId
 
-  public String rh;
+  public String rh; // ObjectId
 
   public String source;
 
-  public double pretentionSalariale;
+  public Double pretentionSalariale;
 
   public String niveauEtude;
 
@@ -56,13 +59,15 @@ public class Prospect {
 
   public String mobiliteGeo;
 
-  public String cv;
+  public Boolean goNogo;
 
-  public String grille;
+  public String cv; // ObjectId
 
-  public byte pr;
+  public String grille; // ObjectId
 
-  public String dc;
+  public Integer pr;
+
+  public String dc; // ObjectId
 
   @JsonProperty
   public PushQualif pushQualif;

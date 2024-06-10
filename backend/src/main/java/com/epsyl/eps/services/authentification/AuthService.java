@@ -88,6 +88,11 @@ public class AuthService {
     return ResponseEntity.ok()
       .headers(responseHeaders)
       .body(UserResponseDto.builder()
+        ._id(user.get_id())
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .email(user.getEmail())
+        .roles(user.getRoles())
         .message("Utilisateur authentifié avec succès")
         .build());
   }

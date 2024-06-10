@@ -23,7 +23,7 @@ public class FileStorageService {
 
     fileStorage = fileStorageRepository.save(fileStorage);
 
-    return fileStorage.get_id();
+    return fileStorage._id;
   }
 
   public FileStorage getFile(String id) {

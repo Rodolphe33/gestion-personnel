@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 import com.epsyl.eps.entities.FileStorage;
 
 @Repository
-public interface FileStorageRepository extends MongoRepository<FileStorage, String> {
-
-}
+public interface FileStorageRepository extends MongoRepository<FileStorage, String> { }

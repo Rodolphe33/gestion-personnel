@@ -7,6 +7,7 @@ import com.epsyl.eps.entities.Prospect;
 
 @Repository
 public interface ProspectRepository extends MongoRepository<Prospect, String> {
+
   /*
    * Vérifier si le trigramme existe
    */

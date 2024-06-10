@@ -19,11 +19,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
+@Document(collection = "users")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "users")
 public class User implements UserDetails {
   @Id
   private String _id;
@@ -84,4 +85,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }
