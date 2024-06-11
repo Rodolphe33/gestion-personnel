@@ -1,46 +1,50 @@
 import { Routes } from '@angular/router';
-// import { inject } from '@angular/core';
 
-// import { AuthentificationService } from '@eps/services/auth/authentification.service';
+// import { adminGuard } from './components/auth/admin.guard';
+import { authGuard } from './components/auth/auth.guard';
 
-import { HomeComponent } from '@eps/shared/components/home/home.component';
-import { NotFoundComponent } from './components/notFound/not-found.component';
+import { LoginComponent } from '@eps/components/auth/login/login.component';
+import { ListProspectsComponent } from './components/list-prospects/list-prospects.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserComponent } from './components/user/user.component';
-import { ListProspectsComponent } from './components/prospects/list-prospects/list-prospects.component';
-// import { LoginComponent } from '@eps/components/auth/login/login.component';
-// import { AuthGuard } from './components/auth/auth.guard';
+import { NotFoundComponent } from './components/notFound/not-found.component';
 
 export const routes: Routes = [
-  // {
-  //   path: 'login',
-  //   component: LoginComponent
-  // },
   {
     path: '',
-    component: HomeComponent,
-    // canActivate: [AuthGuard],
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'prospect',
+    loadComponent: () =>
+      import('./components/list-prospects/list-prospects.component').then(() => ListProspectsComponent)
+  },
+  {
+    path: 'admin',
+    canActivate: [authGuard],
     children: [
       {
-        path: 'prospect',
-        component: ListProspectsComponent,
+        path: 'user',
+        loadComponent: () =>
+          import('./components/user/user.component').then(() => UserComponent)
       },
       {
-        path: 'user',
-        component: UserComponent,
-      },
-      // {
-      //   path: '',
-      //   canMatch: [() => inject(AuthentificationService).isAuthenticated()],
-      // },
-
-      // {
-      //   path: 'register',
-      //   component: UserComponent,
-      // },
-    ],
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./components/dashboard/dashboard.component').then(() => DashboardComponent)
+      }
+    ]
   },
   {
     path: '**',
-    component: NotFoundComponent,
+    loadComponent: () =>
+      import('./components/notFound/not-found.component').then(
+        () => NotFoundComponent
+      ),
   },
 ];

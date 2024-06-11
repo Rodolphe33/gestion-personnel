@@ -29,14 +29,16 @@ export class ProspectService {
     });
   }
 
+  // PUT: **/id**
+  public updateProspect(prospect: Prospect) {
+  console.log(prospect, prospect._id);
+
+    return this.#http.put<Prospect>(`${this.apiUrl}/${prospect._id}`, prospect);
+  }
+
   // DELETE: **/delete**
   public deleteProspect(id: string) {
     return this.#http.delete<void>(`${this.apiUrl}/delete/${id}`);
-  }
-
-  // PUT: **/update**
-  updateProspect(prospect: Prospect) {
-    return this.#http.put<Prospect>(`${this.apiUrl}/edit/${prospect._id}`, prospect);
   }
 
   // GET: **/trigramme**

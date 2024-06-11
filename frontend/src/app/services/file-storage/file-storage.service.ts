@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class FileService {
+export class FileStorageService {
   readonly #http = inject(HttpClient);
 
   apiUrl = `${environment.apiUrl}/files`;

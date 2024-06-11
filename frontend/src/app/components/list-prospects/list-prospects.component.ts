@@ -1,25 +1,24 @@
-import { PushQualif } from './../../../shared/models/prospect.model';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   OnInit,
-  // signal,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
-import { Prospect } from '@eps/shared/models/prospect.model';
+import { newProspect, Prospect, PushQualif } from '@eps/shared/models/prospect.model';
 import { User } from '@eps/shared/models/user.model';
 import { FileResponse } from '@eps/shared/models/file-response';
 
-import { ProspectService } from '@eps/service/prospect/prospect.service';
-import { FileService } from '@eps/service/file/file.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ProspectService } from '@eps/services/prospect/prospect.service';
+import { FileStorageService } from '@eps/services/file-storage/file-storage.service';
+import { ConfirmationService, MessageService, PrimeNGConfig, Translation } from 'primeng/api';
 
 import { BaseIcon } from 'primeng/baseicon';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
+import { CalendarModule, LocaleSettings } from 'primeng/calendar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
@@ -30,9 +29,22 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface expandedRows {
   [key: string]: boolean;
+}
+
+interface confirMessage {
+  target: EventTarget;
+  message: string;
+  header: string,
+  rejectButtonStyleClass: string;
+  acceptSeverity: string;
+  acceptSummary: string;
+  acceptDetail: string;
+  rejectSeverity: string;
+  rejectDetail: string;
 }
 
 @Component({
@@ -54,6 +66,7 @@ interface expandedRows {
     TagModule,
     ToolbarModule,
     ToastModule,
+    TranslateModule,
     NgIf,
     NgFor,
   ],
@@ -66,8 +79,12 @@ export class ListProspectsComponent implements OnInit {
    // services
   readonly prospectService = inject(ProspectService);
   readonly messageService = inject(MessageService);
-  readonly fileService = inject(FileService);
+  readonly fileService = inject(FileStorageService);
   readonly confirmService = inject(ConfirmationService);
+  readonly translate = inject(TranslateService);
+  readonly primengConfig = inject(PrimeNGConfig);
+
+  @ViewChild('formProspect') formProspect!: NgForm;
 
   // Table
   prospects: Prospect[] = [];
@@ -95,10 +112,30 @@ export class ListProspectsComponent implements OnInit {
   fileName: string = '';
   trigramExist: boolean = false;
 
+  locale!: LocaleSettings;
+
+  constructor() {
+    this.translate.setDefaultLang('fr');
+    this.translate.use('fr');
+
+    this.translate.get('primeng.calendar').subscribe(res => {
+      this.primengConfig.setTranslation(res as Translation);
+      this.locale = {
+        firstDayOfWeek: 1,
+        dayNames: res.dayNames,
+        dayNamesShort: res.dayNamesShort,
+        dayNamesMin: res.dayNamesMin,
+        monthNames: res.monthNames,
+        monthNamesShort: res.monthNamesShort,
+        today: res.today,
+        clear: res.clear
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.prospectService.getProspects().subscribe((prospects: Prospect[]) => {
-      console.warn(prospects);
+      // console.warn(prospects);
       this.prospects.push(...prospects);
     });
   }
@@ -107,9 +144,11 @@ export class ListProspectsComponent implements OnInit {
     this.visible = true;
   }
 
-  onSave(newProspect: NgForm) {
-    if(newProspect.valid) {
-      const newProspect: Prospect = {
+  onSave() {
+  const userId = localStorage.getItem('userId');
+  const rhValue = userId ? userId : undefined;
+    if(this.formProspect.valid) {
+      const newProspect: newProspect = {
         firstName: this.firstName,
         lastName: this.lastName,
         trigramme: this.trigram,
@@ -117,7 +156,11 @@ export class ListProspectsComponent implements OnInit {
         phone: this.phone.toString(),
         profil: this.profil,
         cv: this.cvFile,
+        rh: rhValue
       };
+
+      console.log(newProspect);
+
 
       this.prospectService.saveProspect(newProspect).subscribe(() => {
         this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le prospect est ajouté' });
@@ -128,7 +171,7 @@ export class ListProspectsComponent implements OnInit {
 
   generateTrigram() {
     this.firstName && this.lastName ?
-      this.trigram = (this.firstName.substring(0,1) + this.lastName.substring(0,1) + this.lastName.substring(this.lastName.length - 1)).toLowerCase() :
+      this.trigram = (this.firstName.substring(0,1) + this.lastName.substring(0,1) + this.lastName.substring(this.lastName.length - 1)).toLowerCase():
       this.trigram = '';
     if(this.trigram) {
       this.checkTrigram(this.trigram);
@@ -143,7 +186,6 @@ export class ListProspectsComponent implements OnInit {
   }
 
   fullNameBum(data: User) {
-    console.log(data);
     if(data ?? '') {
       return `${data.firstName} ${data.lastName}`;
     } else {
@@ -152,23 +194,18 @@ export class ListProspectsComponent implements OnInit {
   }
 
   validatedBum(event: Event) {
-    console.log(event);
-    this.confirmService.confirm({
+    const data: confirMessage = {
       target: event.target as EventTarget,
-      message: 'Are you sure that you want to proceed?',
+      message: 'Souhaitez-vous valider ce propect ?',
       header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"none",
-      rejectIcon:"none",
       rejectButtonStyleClass:"p-button-text",
-      accept: () => {
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
-      },
-      reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-      }
-  });
-
+      acceptSeverity: 'success',
+      acceptSummary: 'Confirmation',
+      acceptDetail: 'GO pour le prospect',
+      rejectSeverity: 'error',
+      rejectDetail: 'Action rejeté.'
+    };
+    this.confirmMessage(data);
   }
 
   onRowEdit(prospect: Prospect) {
@@ -195,23 +232,20 @@ export class ListProspectsComponent implements OnInit {
 
   archiveProspect(event: Event, prospect: Prospect) {
     this.editing = false;
-    console.log(event.target, prospect._id);
-    this.confirmService.confirm({
+    console.log(prospect);
+
+    const data: confirMessage = {
       target: event.target as EventTarget,
       message: 'Etès-vous sûre de vouloir archiver ce prospet ?',
       header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      acceptIcon:"none",
-      rejectIcon:"none",
       rejectButtonStyleClass:"p-button-text",
-      accept: () => {
-          this.messageService.add({ severity: 'info', summary: 'Confirmation', detail: 'Vous avez archivé le prospect.' });
-      },
-      reject: () => {
-          this.messageService.add({ severity: 'error', summary: 'Rejet', detail: 'You have rejected', life: 3000 });
-      }
-  });
-
+      acceptSeverity: 'success',
+      acceptSummary: 'Confirmation',
+      acceptDetail: 'Vous avez archivé le prospect.',
+      rejectSeverity: 'error',
+      rejectDetail: 'Action rejeté'
+    };
+    this.confirmMessage(data);
   }
 
   onUploadFile(event: FileSelectEvent, type: string) {
@@ -240,6 +274,24 @@ export class ListProspectsComponent implements OnInit {
     }
   }
 
+  confirmMessage(data: confirMessage): void {
+    this.confirmService.confirm({
+      target: data.target,
+      message: data.message,
+      header: data.header,
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      rejectButtonStyleClass: data.rejectButtonStyleClass,
+      accept: () => {
+        this.messageService.add({ severity: data.acceptSeverity, summary: data.acceptSummary, detail: data.acceptDetail });
+      },
+      reject: () => {
+        this.messageService.add({ severity: data.rejectSeverity, summary: '', detail: data.rejectDetail, life: 3000 });
+      }
+  });
+  }
+
   expandAll() {
     if (!this.isExpanded) {
       this.prospects.forEach(prospect => prospect && prospect.pushQualif ? this.expandedRows[prospect.email] = true : '');
@@ -258,5 +310,13 @@ export class ListProspectsComponent implements OnInit {
   onRowExpandedEditCancel(pushQualif: PushQualif, index: number) {
     console.log(pushQualif, index);
     this.expandedEditing = false;
+  }
+
+  // Méthode pour initialiser le calendrier avec la bonne localisation
+  initializeCalendar(): void {
+    const calendarElement = document.querySelector('.p-calendar');
+    if (calendarElement) {
+      calendarElement.setAttribute('locale', JSON.stringify(this.locale));
+    }
   }
 }

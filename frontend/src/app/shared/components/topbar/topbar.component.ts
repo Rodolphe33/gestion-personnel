@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutService } from '@eps/service/layout.service';
+
+import { LayoutService } from '@eps/services/layout.service';
+import { IfAdminDirective } from '@eps/directives/if-admin.directive';
+
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -11,7 +14,7 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: `topbar.component.html`,
   styleUrl: 'topbar.component.scss',
   standalone: true,
-  imports: [CommonModule, RouterModule, TooltipModule, ButtonModule],
+  imports: [CommonModule, RouterModule, TooltipModule, ButtonModule, IfAdminDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopbarComponent {

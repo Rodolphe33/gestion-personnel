@@ -1,3 +1,4 @@
+import { FileStorage } from "./fileStorage";
 import { User } from "./user.model";
 
 export interface Prospect {
@@ -11,17 +12,18 @@ export interface Prospect {
   dateContact?: Date;
   dateEntretien?: Date
   statusProspect?: string;
-  bum?: User;
-  rh?: User;
+  bum?: User | string;
+  rh?: User | string;
   source?: string;
   prententionSalarial?: number;
   niveauEtude?: string;
   disponibilite?: string;
   mobiliteGeo?: string;
-  cv?: string;
-  grille?: string;
+  goNogo?: boolean;
+  cv?: FileStorage | string;
+  grille?: FileStorage | string;
   pr?: number;
-  dc?: string;
+  dc?: FileStorage | string;
   pushQualif?: PushQualif;
 }
 
@@ -30,4 +32,15 @@ export interface PushQualif {
   datePush: Date;
   datePushRetour: Date;
   dateQualif: Date;
+}
+
+export interface newProspect {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  profil: string;
+  rh: string | User | undefined;
+  trigramme: string;
+  cv: string;
 }

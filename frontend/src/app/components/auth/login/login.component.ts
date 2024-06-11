@@ -1,23 +1,51 @@
-import { Component } from "@angular/core";
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { AuthService } from '@eps/services/auth/auth.service';
+import { Role } from '@eps/shared/models/role.model';
+import { User } from '@eps/shared/models/user.model';
+import { ButtonModule } from 'primeng/button';
 
 import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'eps-login',
   templateUrl: 'login.component.html',
   styleUrl: 'login.component.scss',
   standalone: true,
-  imports: [DialogModule, ButtonModule],
+  imports: [DialogModule, FormsModule, InputTextModule, PasswordModule, ButtonModule],
 })
 export class LoginComponent {
-  visible: boolean = false;
+  readonly auth = inject(AuthService);
+  readonly router = inject(Router);
 
-  showDialog() {
-      this.visible = true;
+  loginVisible: boolean = true;
+
+  credatials = {
+    email: '',
+    password: ''
   }
 
-  closeDialog() {
-      this.visible = false;
+  login() {
+    this.auth.login(this.credatials.email, this.credatials.password).subscribe((user: User) => {
+      localStorage.setItem('userId', JSON.stringify(user._id));
+      localStorage.setItem('firstName', JSON.stringify(user.firstName));
+      localStorage.setItem('lastName', JSON.stringify(user.lastName));
+      localStorage.setItem('email', JSON.stringify(user.email));
+
+      user.roles.forEach((role: Role) => {
+        localStorage.setItem('role', JSON.stringify(role.name));
+      });
+
+      this.loginVisible = false;
+      console.log(this.auth.getUserId());
+
+      this.router.navigate(['/prospect']);
+    }, error => {
+      console.error(`Login error: ${error}`);
+    });
   }
 }

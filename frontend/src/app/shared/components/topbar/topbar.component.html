@@ -1,39 +1,41 @@
 <div class="layout-topbar">
-  <a class="layout-topbar-logo" [routerLink]="['/prospect']">
+  <!-- <a class="layout-topbar-logo" [routerLink]="['/prospect']"> -->
       <span>Epsyl Prospects Service</span>
-  </a>
+  <!-- </a> -->
   <!-- TODO Pour ajouter un bouton pour afficher/cacher un sidebar  -->
-  <!-- <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+  <!-- <p-button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
       <i class="pi pi-bars"></i>
-  </button> -->
+  </p-button> -->
 
-  <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button">
+  <p-button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button">
       <i class="pi pi-users"></i>
-  </button>
+  </p-button>
 
   <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-      <button class="p-link layout-topbar-button"
+      <p-button outlined="true"
               [routerLink]="['/prospect']"
               routerLinkActive="router-link-active"
               pTooltip="Liste des prospects"
-              tooltipPosition="bottom">
-          <i class="pi pi-users" style="font-size: 2rem; color: 'var(--primary-color)';"></i>
-      </button>
-      <button class="p-link layout-topbar-button"
+              tooltipPosition="bottom"
+              label="Liste des prospects"
+              *ifAdmin />
+      <p-button outlined="true"
               [routerLink]="['/user']"
               routerLinkActive="router-link-active"
               pTooltip="Liste des utilisateurs"
-              tooltipPosition="bottom">
-          <i class="pi pi-user" style="font-size: 2rem; color: 'var(--primary-color)';"></i>
-      </button>
-      <!-- <button class="p-link layout-topbar-button" [routerLink]="'/documentation'"> -->
-      <button class="p-link layout-topbar-button"
-              [routerLink]="['/settings']"
+              tooltipPosition="bottom"
+              label="Liste des utilisateurs"
+              *ifAdmin />
+      <!-- <p-button class="p-link layout-topbar-button" [routerLink]="'/documentation'"> -->
+      <p-button icon="pi pi-chart-line"
+              [routerLink]="['/dashboard']"
               routerLinkActive="router-link-active"
-              pTooltip="Paramètres"
-              tooltipPosition="bottom">
-          <i class="pi pi-cog" style="font-size: 2rem; color: 'var(--primary-color)';"></i>
-      </button>
+              pTooltip="Tableau de bord"
+              tooltipPosition="bottom"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary "
+              *ifAdmin />
   </div>
 </div>
 

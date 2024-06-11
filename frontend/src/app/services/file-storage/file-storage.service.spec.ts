@@ -1,17 +1,17 @@
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { FileService } from "./file.service";
+import { FileStorageService } from "./file-storage.service";
 
 describe('ProspectService', () => {
-  let service: FileService;
+  let service: FileStorageService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [FileService]
+      providers: [FileStorageService]
     });
-    service = TestBed.inject(FileService);
+    service = TestBed.inject(FileStorageService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 });

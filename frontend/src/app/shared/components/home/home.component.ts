@@ -1,4 +1,3 @@
-import { LayoutService } from './../../../services/layout.service';
 import {
   Component,
   inject,
@@ -6,11 +5,13 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { LayoutService } from '@eps/services/layout.service';
 import { TopbarComponent } from '../topbar/topbar.component';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { filter, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { LoginComponent } from '@eps/components/auth/login/login.component';
 
 @Component({
   selector: 'eps-home',
@@ -18,10 +19,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: 'home.component.scss',
   standalone: true,
   imports: [
+    RouterOutlet,
     CommonModule,
     TopbarComponent,
     RouterModule,
     FooterComponent,
+    LoginComponent
   ],
 })
 export class HomeComponent implements OnDestroy {

@@ -1,7 +1,7 @@
 import { User } from '@eps/shared/models/user.model';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { UserService } from '@eps/service/user/user.service';
+import { UserService } from '@eps/services/user/user.service';
 import { TableModule } from 'primeng/table';
 
 @Component({

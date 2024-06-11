@@ -1,5 +1,6 @@
 <div class="card">
-  <p-toast></p-toast>
+  <p-toast />
+  <p-confirmDialog />
   <p-toolbar styleClass="mb-2 gap-2">
     <ng-template pTemplate="end">
       <p-button label="Ajouter un prospect" icon="pi pi-plus" class="p-button-success mr-2"
@@ -10,21 +11,21 @@
     [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped" [expandedRowKeys]="expandedRows" >
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 1rem">Trigramme</th>
-        <th style="width: auto">Nom</th>
-        <th style="width: auto">Prénom</th>
-        <th style="width: auto">Profil</th>
-        <th style="width: 2%">CV</th>
-        <th style="width: 10%">Date de contact</th>
-        <th style="width: 10%">Date d'entretien</th>
-        <th style="width: 2%">Grille</th>
-        <th style="width: 2%">GO / NOGO</th>
-        <th style="width: auto">BUM</th>
-        <th style="width: 2%">PR</th>
-        <th style="width: 2%">DC</th>
-        <th style="width: 2%">Push / Qualif</th>
-        <th style="width: 2%"></th> <!-- bouton modif -->
-        <th style="width: 2%"></th> <!-- bouton archive -->
+        <th style="width: 5px">Trigramme</th>
+        <th style="width: 15px">Nom</th>
+        <th style="width: 15px">Prénom</th>
+        <th style="width: 15px">Profil</th>
+        <th style="width: 5px">CV</th>
+        <th style="width: 15px">Date de contact</th>
+        <th style="width: 15px">Date d'entretien</th>
+        <th style="width: 5px">Grille</th>
+        <th style="width: 5%">GO / NOGO</th>
+        <th style="width: 15px">BUM</th>
+        <th style="width: 8px">PR</th>
+        <th style="width: 5px">DC</th>
+        <th style="width: 8px">Push / Qualif</th>
+        <th style="width: 5px"></th> <!-- bouton modif -->
+        <th style="width: 5px"></th> <!-- bouton archive -->
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-prospect let-ri="rowIndex" let-editing="editing">
@@ -76,7 +77,7 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <p-calendar [(ngModel)]="prospect.dateContact" dateFormat="dd-MM-yyyy" appendTo="body"></p-calendar>
+              <p-calendar [(ngModel)]="prospect.dateContact" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
             </ng-template>
             <ng-template pTemplate="output">
               {{ prospect.dateContact | date : "dd-MM-yyyy" }}
@@ -86,7 +87,7 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <p-calendar [(ngModel)]="prospect.dateEntretien" dateFormat="dd-MM-yyyy" appendTo="body"/>
+              <p-calendar [(ngModel)]="prospect.dateEntretien" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
             </ng-template>
             <ng-template pTemplate="output">
               {{ prospect.dateEntretien | date : "dd-MM-yyyy" }}
@@ -119,8 +120,8 @@
             <i class="pi pi-thumbs-up-fill" style="color: greenyellow"></i>
           </span>
           } @else {
-            <div class="flex justify-content-center gap-2">
-              <p-button severity="secondary" label="Go / NoGo" (click)="validatedBum($event)"
+            <div class="flex justify-content-center">
+              <p-button severity="info" label="Go / NoGo" (click)="validatedBum($event)"
                 class="p-button-rounded p-button-text">
               </p-button>
             </div>
@@ -341,7 +342,7 @@
       <div>
         <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
         <button pButton pRipple label="Ajouter" icon="pi pi-check" class="p-button-primary"
-          (click)="onSave(formProspect)" type="submit"></button>
+          (click)="onSave()" type="submit"></button>
       </div>
     </div>
   </form>
