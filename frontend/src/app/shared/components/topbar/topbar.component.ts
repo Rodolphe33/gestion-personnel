@@ -8,6 +8,7 @@ import { IfAdminDirective } from '@eps/directives/if-admin.directive';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { AuthService } from '@eps/service/auth/auth.service';
 
 @Component({
   selector: 'eps-topbar',
@@ -23,5 +24,16 @@ export class TopbarComponent {
   @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
   @ViewChild('topbarmenu') menu!: ElementRef;
 
-  layoutService = inject(LayoutService);
+  readonly layoutService = inject(LayoutService);
+  readonly auth = inject(AuthService);
+
+  firstName: string | null = '';
+  user: string = '';
+
+  ngOnInit(): void {
+    this.firstName = this.auth.getFirstName();
+    if(this.firstName !== null) {
+      this.user = this.firstName;
+    }
+  }
 }

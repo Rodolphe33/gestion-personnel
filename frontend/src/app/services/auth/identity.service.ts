@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Roles } from '@eps/shared/enums/role';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdentityService {
+  readonly auth = inject(AuthService);
 
-  role = localStorage.getItem('roles');
+  role = this.auth.getRole();
 
   isAdmin(){
     if (this.role !== undefined && this.role !== null) {

@@ -159,9 +159,6 @@ export class ListProspectsComponent implements OnInit {
         rh: rhValue
       };
 
-      console.log(newProspect);
-
-
       this.prospectService.saveProspect(newProspect).subscribe(() => {
         this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le prospect est ajouté' });
         this.visible = false;

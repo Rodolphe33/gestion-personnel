@@ -41,7 +41,7 @@ export class LoginComponent {
       });
 
       this.loginVisible = false;
-      console.log(this.auth.getUserId());
+      console.log(this.auth.getRole());
 
       this.router.navigate(['/prospect']);
     }, error => {

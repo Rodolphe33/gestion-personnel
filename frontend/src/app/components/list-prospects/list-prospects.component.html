@@ -121,8 +121,8 @@
           </span>
           } @else {
             <div class="flex justify-content-center">
-              <p-button severity="info" label="Go / NoGo" (click)="validatedBum($event)"
-                class="p-button-rounded p-button-text">
+              <p-button severity="info" label="Go/ NoGo" (click)="validatedBum($event)"
+                class="p-button-rounded p-button-text" *isBum isAdmin>
               </p-button>
             </div>
           }
