@@ -70,14 +70,24 @@ public class AuthService {
 
   public ResponseEntity<UserResponseDto> login(LoginRequestDto request) {
   
-    var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> {
-      return new RuntimeException("Utilisateur non trouvé");
-    });
+    var user = userRepository.findByEmail(request.getEmail()).orElseThrow(null);
+    if (user == null) {
+      return ResponseEntity.badRequest()
+        .body(UserResponseDto.builder()
+          .message("Email incorrect")
+          .build());
+    }
 
+    try {
     Authentication authentication = authenticationManager
       .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
     SecurityContextHolder.getContext().setAuthentication(authentication);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest()
+        .body(UserResponseDto.builder()
+          .message("Mot de passe incorrect")
+          .build());
+    }
 
     var jwtToken = jwtService.generateToken(user);
 
@@ -88,7 +98,7 @@ public class AuthService {
     return ResponseEntity.ok()
       .headers(responseHeaders)
       .body(UserResponseDto.builder()
-        ._id(user.get_id())
+        ._id(user.get_id().toString())
         .firstName(user.getFirstName())
         .lastName(user.getLastName())
         .email(user.getEmail())

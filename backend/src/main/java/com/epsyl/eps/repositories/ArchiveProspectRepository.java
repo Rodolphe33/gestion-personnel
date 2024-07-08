@@ -1,10 +1,11 @@
 package com.epsyl.eps.repositories;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.epsyl.eps.entities.FileStorage;
+import com.epsyl.eps.entities.ArchiveProspect;
 
 @Repository
-public interface FileStorageRepository extends MongoRepository<FileStorage, ObjectId> { }
+public interface ArchiveProspectRepository extends MongoRepository<ArchiveProspect, String> {
+
+}

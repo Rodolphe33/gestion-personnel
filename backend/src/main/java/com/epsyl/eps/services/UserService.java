@@ -3,6 +3,8 @@ package com.epsyl.eps.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
+
 import com.epsyl.eps.entities.Role;
 import com.epsyl.eps.entities.User;
 
@@ -13,7 +15,7 @@ public interface UserService {
 
 	// CRUD operations
 	Iterable<User> listAll();
-	Optional<User> getUserByID(String id);
+	Optional<User> getUserByID(ObjectId id);
 	User saveUser(User user);
-  Optional<User> deleteUser(String _id);
+  Optional<User> deleteUser(ObjectId _id);
 }

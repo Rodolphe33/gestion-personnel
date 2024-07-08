@@ -3,6 +3,7 @@ package com.epsyl.eps.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,15 +38,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   public void addRoleToUser(User user, List<Role> roles) {
-  //   User userFromDB = userRepository.findByEmail(user.getEmail()).orElse(null);
+    User userFromDB = userRepository.findByEmail(user.getEmail()).orElse(null);
 
-  //   roles.stream()
-  //       .map(Role::getName)
-  //       .map(roleRepository::findByName)
-  //       .forEach(userFromDB.getRoles()::add);
+    if(userFromDB != null) {
+      roles.forEach(role -> {
+        Role roleFromDB = roleRepository.findByName(role.getName().toString()).orElse(null);
+
+        if(roleFromDB != null && !userFromDB.getRoles().contains(roleFromDB)) {
+          userFromDB.getRoles().add(roleFromDB);
+        }
+      });
+      userRepository.save(userFromDB);
+    }
   }
 
-  public Optional<User> getUserByID(String userId) {
+  public Optional<User> getUserByID(ObjectId userId) {
     return this.userRepository.findById(userId);
   }
 
@@ -53,7 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     return this.userRepository.findAll();
   }
 
-  public Optional<User> deleteUser(String _id) {
+  public Optional<User> deleteUser(ObjectId _id) {
     return this.userRepository.findById(_id).flatMap(user -> {
       userRepository.deleteById(user.get_id());
       return Optional.of(user);

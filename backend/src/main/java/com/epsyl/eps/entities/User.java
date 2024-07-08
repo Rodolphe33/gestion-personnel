@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,15 +20,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.epsyl.eps.serialization.GrantedAuthorityDeserializer;
+import com.epsyl.eps.serialization.GrantedAuthoritySerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Document(collection = "users")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "users")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
   @Id
-  private String _id;
+  private ObjectId _id;
 
   @NotBlank
   @Size(max = 20)
@@ -49,6 +56,8 @@ public class User implements UserDetails {
   @DBRef
   private Collection<Role> roles;
 
+  @JsonSerialize(contentUsing = GrantedAuthoritySerializer.class)
+  @JsonDeserialize(contentUsing = GrantedAuthorityDeserializer.class)
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<GrantedAuthority> authorities = new ArrayList<>();
@@ -85,5 +94,4 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }

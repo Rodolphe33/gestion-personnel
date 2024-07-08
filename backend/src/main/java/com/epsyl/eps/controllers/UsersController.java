@@ -2,6 +2,7 @@ package com.epsyl.eps.controllers;
 
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class UsersController {
 
   // GET api/v1/user/id
   @RequestMapping("/{id}")
-  public ResponseEntity<User> getUser(@PathVariable String id) {
+  public ResponseEntity<User> getUser(@PathVariable ObjectId id) {
     Optional<User> user = userService.getUserByID(id);
     if (user.isPresent()) {
     return ResponseEntity.ok(user.get());
@@ -60,7 +61,7 @@ public class UsersController {
 
   // PUT api/v1/user/id
   @PutMapping("/{id}")
-  public User updateUser(@RequestBody User user, @PathVariable String id) {
+  public User updateUser(@RequestBody User user, @PathVariable ObjectId id) {
     user.set_id(id);
     userService.saveUser(user);
     return user;
@@ -68,7 +69,7 @@ public class UsersController {
 
   // DELETE api/v1/user/delete/id
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+  public ResponseEntity<Void> deleteUser(@PathVariable ObjectId userId) {
     userService.deleteUser(userId);
     return ResponseEntity.noContent().build();
   }

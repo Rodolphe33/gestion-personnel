@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +70,7 @@ public class ProspectsController {
 
   // GET /api/v1/prospect/id
   @RequestMapping("/{id}")
-  public ResponseEntity<Prospect> getProspectById(@PathVariable String _id) {
+  public ResponseEntity<Prospect> getProspectById(@PathVariable ObjectId _id) {
     Optional<Prospect> prospect = prospectService.getProspectByID(_id);
     if (prospect.isPresent()) {
       return ResponseEntity.ok(prospect.get());
@@ -87,20 +88,20 @@ public class ProspectsController {
   // POST /api/v1/prospect/save
   @PostMapping("/save")
   public Prospect saveProspect(@RequestBody Prospect prospect) {
-    return prospectService.save(prospect);
+    return prospectService.createProspect(prospect);
   }
 
   // PUT /api/v1/prospect/id
   @PutMapping("/{id}")
-  public Prospect updateProspect(@PathVariable String _id, @RequestBody Prospect prospect) {
-    return prospectService.updateProspect(_id, prospect);
+  public ResponseEntity<Prospect> updateProspect(@PathVariable ObjectId id, @RequestBody Prospect prospect) {
+    Prospect updatedProspect = prospectService.updateProspect(id, prospect);
+    return ResponseEntity.ok(updatedProspect);
   }
 
   // DELETE /api/v1/prospect/delete/id
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> deleteProspect(@PathVariable String _id) {
-    prospectService.deleteProspectById(_id);
+  public ResponseEntity<Void> deleteProspect(@PathVariable ObjectId id) {
+    prospectService.deleteProspectById(id);
     return ResponseEntity.noContent().build();
   }
-
 }

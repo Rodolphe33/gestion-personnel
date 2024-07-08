@@ -1,4 +1,4 @@
-package com.epsyl.eps.configuration_global;
+package com.epsyl.eps.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,5 +1,6 @@
 package com.epsyl.eps.entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,12 +13,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "fileStorages")
+@Document(collection = "file_storages")
 public class FileStorage {
   @Id
-  public String _id;
+  public ObjectId _id;
   public String filename;
   public String contentType;
   public byte[] data;
-
 }

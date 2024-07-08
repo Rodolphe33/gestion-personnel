@@ -3,6 +3,7 @@ package com.epsyl.eps.services;
 import com.epsyl.eps.entities.FileStorage;
 import com.epsyl.eps.repositories.FileStorageRepository;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +24,10 @@ public class FileStorageService {
 
     fileStorage = fileStorageRepository.save(fileStorage);
 
-    return fileStorage._id;
+    return fileStorage._id.toHexString();
   }
 
-  public FileStorage getFile(String id) {
+  public FileStorage getFile(ObjectId id) {
     return fileStorageRepository.findById(id).orElse(null);
   }
 }

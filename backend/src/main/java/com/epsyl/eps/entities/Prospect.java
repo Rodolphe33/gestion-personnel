@@ -3,13 +3,15 @@ package com.epsyl.eps.entities;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.epsyl.eps.configuration_global.ObjectIdDeserrializer;
+import com.epsyl.eps.serialization.ObjectIdDeserrializer;
+import com.epsyl.eps.serialization.ObjectIdSerializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +25,9 @@ import lombok.NoArgsConstructor;
 @Document(collection = "prospects")
 public class Prospect {
 
-  @Id
+  @JsonSerialize(using = ObjectIdSerializer.class)
   @JsonDeserialize(using = ObjectIdDeserrializer.class)
-  public String _id;
+  public ObjectId _id;
 
   public String firstName;
 
@@ -39,38 +41,55 @@ public class Prospect {
 
   public String profil;
 
-  public Date dateContact;
+  public Date contactDate;
 
-  public Date dateEntretien;
+  public Date meetingDate;
 
-  public String statutProspect;
+  @JsonSerialize(using = ObjectIdSerializer.class)
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
+  public ObjectId bum; // ObjectId
 
-  public String bum; // ObjectId
-
-  public String rh; // ObjectId
+  @JsonSerialize(using = ObjectIdSerializer.class)
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
+  public ObjectId rh; // ObjectId
 
   public String source;
 
-  public Double pretentionSalariale;
+  public String pretentionSalarial;
 
   public String niveauEtude;
 
+  public Boolean frenchNationality;
+  public String nationality;
+
+  public String experience;
+
+  public String englishLevel;
+
+  public String avis;
+
   public String disponibilite;
 
-  public String mobiliteGeo;
+  public String[] mobiliteGeo;
 
-  public Boolean goNogo;
+  @JsonSerialize(using = ObjectIdSerializer.class)
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
+  public ObjectId cv; // ObjectId
 
-  public String cv; // ObjectId
-
-  public String grille; // ObjectId
+  @JsonSerialize(using = ObjectIdSerializer.class)
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
+  public ObjectId grille; // ObjectId
 
   public Integer pr;
 
-  public String dc; // ObjectId
+  public Boolean prValidated;
+
+  @JsonSerialize(using = ObjectIdSerializer.class)
+  @JsonDeserialize(using = ObjectIdDeserrializer.class)
+  public ObjectId dc; // ObjectId
 
   @JsonProperty
-  public PushQualif pushQualif;
+  public PushQualif[] pushQualif;
 
   @CreatedDate
   public LocalDateTime createdDate;

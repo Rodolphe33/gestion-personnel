@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ public class FileStorageController {
   }
 
   @GetMapping("/download/{id}")
-  public ResponseEntity<byte[]> downloadFile(@PathVariable String _id) {
+  public ResponseEntity<byte[]> downloadFile(@PathVariable ObjectId _id) {
     FileStorage fileStorage = fileStorageService.getFile(_id);
     if(fileStorage != null) {
       HttpHeaders headers = new HttpHeaders();
