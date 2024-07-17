@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Roles } from '@eps/shared/enums/role';
+import { Roles } from '@gtper/shared/enums/role';
 import { AuthService } from './auth.service';
 
 @Injectable({

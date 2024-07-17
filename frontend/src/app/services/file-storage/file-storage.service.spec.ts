@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { TestBed } from "@angular/core/testing";
 import { FileStorageService } from "./file-storage.service";
 
-describe('ProspectService', () => {
+describe('PersonnalService', () => {
   let service: FileStorageService;
   let httpMock: HttpTestingController;
 

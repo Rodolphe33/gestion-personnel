@@ -1,18 +1,18 @@
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { ProspectService } from "./prospect.service";
-import { Prospect } from "@eps/shared/models/prospect.model";
+import { PersonnalService } from "./personnal.service";
+import { Personnal } from "@gtper/shared/models/personnal.model";
 
-describe('ProspectService', () => {
-  let service: ProspectService;
+describe('PersonnalService', () => {
+  let service: PersonnalService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ProspectService]
+      providers: [PersonnalService]
     });
-    service = TestBed.inject(ProspectService);
+    service = TestBed.inject(PersonnalService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -24,8 +24,8 @@ describe('ProspectService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return list of prospects', () => {
-    const dummyProspects: Prospect[] = [
+  it('should return list of personnals', () => {
+    const dummyPersonnals: Personnal[] = [
       {
         _id: '123',
         firstName: 'John',
@@ -36,7 +36,7 @@ describe('ProspectService', () => {
         profil: 'Développeur Fullstack',
         dateContact: new Date(),
         dateEntretien: new Date(),
-        statusProspect: 'En attente',
+        statusPersonnal: 'En attente',
         bum: {
           _id: 'test-1',
           firstName: 'John',
@@ -71,13 +71,13 @@ describe('ProspectService', () => {
       }
     ];
 
-    service.getProspects().subscribe(prospects => {
-      expect(prospects.length).toBe(1);
-      expect(prospects).toEqual(dummyProspects);
+    service.getPersonnals().subscribe(personnals => {
+      expect(personnals.length).toBe(1);
+      expect(personnals).toEqual(dummyPersonnals);
     });
 
     const req = httpMock.expectOne(`${service.apiUrl}/all`);
     expect(req.request.method).toBe('GET');
-    req.flush(dummyProspects);
+    req.flush(dummyPersonnals);
   });
 });

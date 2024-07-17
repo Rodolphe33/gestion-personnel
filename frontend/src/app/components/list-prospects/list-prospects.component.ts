@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
-import { newProspect, Prospect, PushQualif } from '@eps/shared/models/prospect.model';
-import { User } from '@eps/shared/models/user.model';
-import { FileResponse } from '@eps/shared/models/file-response';
+import { newPersonnal, Personnal, PushQualif } from '@gtper/shared/models/personnal.model';
+import { User } from '@gtper/shared/models/user.model';
+import { FileResponse } from '@gtper/shared/models/file-response';
 
-import { ProspectService } from '@eps/services/prospect/prospect.service';
-import { FileStorageService } from '@eps/services/file-storage/file-storage.service';
+import { PersonnalService } from '@gtper/services/personnal/personnal.service';
+import { FileStorageService } from '@gtper/services/file-storage/file-storage.service';
 import { ConfirmationService, MessageService, PrimeNGConfig, Translation } from 'primeng/api';
 
 import { BaseIcon } from 'primeng/baseicon';
@@ -48,7 +48,7 @@ interface confirMessage {
 }
 
 @Component({
-  selector: 'eps-list-prospects',
+  selector: 'gtper-list-personnals',
   standalone: true,
   imports: [
     CalendarModule,
@@ -70,25 +70,25 @@ interface confirMessage {
     NgIf,
     NgFor,
   ],
-  templateUrl: 'list-prospects.component.html',
-  styleUrl: 'list-prospects.component.scss',
+  templateUrl: 'list-personnals.component.html',
+  styleUrl: 'list-personnals.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [MessageService, ConfirmationService],
 })
-export class ListProspectsComponent implements OnInit {
+export class ListPersonnalsComponent implements OnInit {
    // services
-  readonly prospectService = inject(ProspectService);
+  readonly personnalService = inject(PersonnalService);
   readonly messageService = inject(MessageService);
   readonly fileService = inject(FileStorageService);
   readonly confirmService = inject(ConfirmationService);
   readonly translate = inject(TranslateService);
   readonly primengConfig = inject(PrimeNGConfig);
 
-  @ViewChild('formProspect') formProspect!: NgForm;
+  @ViewChild('formPersonnal') formPersonnal!: NgForm;
 
   // Table
-  prospects: Prospect[] = [];
-  clonedProspects: { [s: string]: Prospect } = {};
+  personnals: Personnal[] = [];
+  clonedPersonnals: { [s: string]: Personnal } = {};
   editing = false;
   dateContact: Date = new Date();
   dateEntretien: Date = new Date();
@@ -100,7 +100,7 @@ export class ListProspectsComponent implements OnInit {
 
   // dialog
   visible: boolean = false;
-  prospect!: Prospect;
+  personnal!: Personnal;
   submitted: boolean = false;
   lastName: string = '';
   firstName: string = '';
@@ -134,21 +134,21 @@ export class ListProspectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.prospectService.getProspects().subscribe((prospects: Prospect[]) => {
-      // console.warn(prospects);
-      this.prospects.push(...prospects);
+    this.personnalService.getPersonnals().subscribe((personnals: Personnal[]) => {
+      // console.warn(personnals);
+      this.personnals.push(...personnals);
     });
   }
 
-  newProspect() {
+  newPersonnal() {
     this.visible = true;
   }
 
   onSave() {
   const userId = localStorage.getItem('userId');
   const rhValue = userId ? userId : undefined;
-    if(this.formProspect.valid) {
-      const newProspect: newProspect = {
+    if(this.formPersonnal.valid) {
+      const newPersonnal: newPersonnal = {
         firstName: this.firstName,
         lastName: this.lastName,
         trigramme: this.trigram,
@@ -159,8 +159,8 @@ export class ListProspectsComponent implements OnInit {
         rh: rhValue
       };
 
-      this.prospectService.saveProspect(newProspect).subscribe(() => {
-        this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le prospect est ajouté' });
+      this.personnalService.savePersonnal(newPersonnal).subscribe(() => {
+        this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le personnal est ajouté' });
         this.visible = false;
       });
     }
@@ -176,7 +176,7 @@ export class ListProspectsComponent implements OnInit {
   }
 
   checkTrigram(trigram: string) {
-    this.prospectService.checkTrigram(trigram).subscribe(
+    this.personnalService.checkTrigram(trigram).subscribe(
       data => this.trigramExist = data,
       error => console.error(error)
     );
@@ -198,38 +198,38 @@ export class ListProspectsComponent implements OnInit {
       rejectButtonStyleClass:"p-button-text",
       acceptSeverity: 'success',
       acceptSummary: 'Confirmation',
-      acceptDetail: 'GO pour le prospect',
+      acceptDetail: 'GO pour le personnal',
       rejectSeverity: 'error',
       rejectDetail: 'Action rejeté.'
     };
     this.confirmMessage(data);
   }
 
-  onRowEdit(prospect: Prospect) {
-    this.clonedProspects[prospect._id as string] = { ...prospect };
+  onRowEdit(personnal: Personnal) {
+    this.clonedPersonnals[personnal._id as string] = { ...personnal };
     this.editing = true;
   }
 
-  onRowEditSave(prospect: Prospect) {
-    console.log(prospect);
-    if (prospect._id) {
-      this.prospectService.updateProspect(prospect).subscribe(() => {
-        this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le prospect est modifié' });
+  onRowEditSave(personnal: Personnal) {
+    console.log(personnal);
+    if (personnal._id) {
+      this.personnalService.updatePersonnal(personnal).subscribe(() => {
+        this.messageService.add({ severity:'success', summary: 'Success', detail: 'Le personnal est modifié' });
       });
-      delete this.clonedProspects[prospect._id as string];
+      delete this.clonedPersonnals[personnal._id as string];
     }
     this.editing = false;
   }
 
-  onRowEditCancel(prospect: Prospect, index: number) {
-    this.prospects[index] = this.clonedProspects[prospect._id as string];
-    delete this.clonedProspects[prospect._id as string];
+  onRowEditCancel(personnal: Personnal, index: number) {
+    this.personnals[index] = this.clonedPersonnals[personnal._id as string];
+    delete this.clonedPersonnals[personnal._id as string];
     this.editing = false;
   }
 
-  archiveProspect(event: Event, prospect: Prospect) {
+  archivePersonnal(event: Event, personnal: Personnal) {
     this.editing = false;
-    console.log(prospect);
+    console.log(personnal);
 
     const data: confirMessage = {
       target: event.target as EventTarget,
@@ -238,7 +238,7 @@ export class ListProspectsComponent implements OnInit {
       rejectButtonStyleClass:"p-button-text",
       acceptSeverity: 'success',
       acceptSummary: 'Confirmation',
-      acceptDetail: 'Vous avez archivé le prospect.',
+      acceptDetail: 'Vous avez archivé le personnal.',
       rejectSeverity: 'error',
       rejectDetail: 'Action rejeté'
     };
@@ -291,7 +291,7 @@ export class ListProspectsComponent implements OnInit {
 
   expandAll() {
     if (!this.isExpanded) {
-      this.prospects.forEach(prospect => prospect && prospect.pushQualif ? this.expandedRows[prospect.email] = true : '');
+      this.personnals.forEach(personnal => personnal && personnal.pushQualif ? this.expandedRows[personnal.email] = true : '');
     } else {
       this.expandedRows = {};
     }

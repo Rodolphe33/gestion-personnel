@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { LayoutService } from '@eps/services/layout.service';
-import { IfAdminDirective } from '@eps/directives/if-admin.directive';
+import { LayoutService } from '@gtper/services/layout.service';
+import { IfAdminDirective } from '@gtper/directives/if-admin.directive';
 
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { AuthService } from '@eps/service/auth/auth.service';
+import { AuthService } from '@gtper/service/auth/auth.service';
 
 @Component({
-  selector: 'eps-topbar',
+  selector: 'gtper-topbar',
   templateUrl: `topbar.component.html`,
   styleUrl: 'topbar.component.scss',
   standalone: true,

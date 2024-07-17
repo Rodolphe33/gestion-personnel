@@ -5,16 +5,16 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { LayoutService } from '@eps/services/layout.service';
+import { LayoutService } from '@gtper/services/layout.service';
 import { TopbarComponent } from '../topbar/topbar.component';
 import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { filter, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from '@eps/components/auth/login/login.component';
+import { LoginComponent } from '@gtper/components/auth/login/login.component';
 
 @Component({
-  selector: 'eps-home',
+  selector: 'gtper-home',
   templateUrl: 'home.component.html',
   styleUrl: 'home.component.scss',
   standalone: true,

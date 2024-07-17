@@ -1,7 +1,7 @@
 import { FileStorage } from "./fileStorage";
 import { User } from "./user.model";
 
-export interface Prospect {
+export interface Personnal {
   _id?: string;
   firstName: string;
   lastName: string;
@@ -11,7 +11,7 @@ export interface Prospect {
   profil: string;
   dateContact?: Date;
   dateEntretien?: Date
-  statusProspect?: string;
+  statusPersonnal?: string;
   bum?: User | string;
   rh?: User | string;
   source?: string;
@@ -34,7 +34,7 @@ export interface PushQualif {
   dateQualif: Date;
 }
 
-export interface newProspect {
+export interface newPersonnal {
   firstName: string;
   lastName: string;
   email: string;

@@ -1,26 +1,26 @@
 ## 1. Configurer votre Repository MongoDB : Créez un repository pour accéder aux données de la base de données MongoDB.
 
 ```java
-public interface ProspectRepository extends MongoRepository<Prospect, String> {
-    List<Prospect> findAllByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+public interface PersonnalRepository extends MongoRepository<Personnal, String> {
+    List<Personnal> findAllByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
 ```
 
-## 2. Service pour Récupérer les Nouvelles Entrées : Implémentez un service qui utilisera le repository pour récupérer les prospects ajoutés la veille.
+## 2. Service pour Récupérer les Nouvelles Entrées : Implémentez un service qui utilisera le repository pour récupérer les personnals ajoutés la veille.
 
 ```java
 @Service
-public class ProspectService {
+public class PersonnalService {
 
     @Autowired
-    private ProspectRepository prospectRepository;
+    private PersonnalRepository personnalRepository;
 
-    public List<Prospect> getProspectsAddedYesterday() {
+    public List<Personnal> getPersonnalsAddedYesterday() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startOfYesterday = now.minusDays(1).with(LocalTime.MIN);
         LocalDateTime endOfYesterday = now.minusDays(1).with(LocalTime.MAX);
 
-        return prospectRepository.findAllByCreatedDateBetween(startOfYesterday, endOfYesterday);
+        return personnalRepository.findAllByCreatedDateBetween(startOfYesterday, endOfYesterday);
     }
 }
 ```
@@ -29,15 +29,15 @@ public class ProspectService {
 
 ```java
 @RestController
-@RequestMapping("/api/prospects")
-public class ProspectController {
+@RequestMapping("/api/personnals")
+public class PersonnalController {
 
     @Autowired
-    private ProspectService prospectService;
+    private PersonnalService personnalService;
 
     @GetMapping("/new")
-    public List<Prospect> getNewProspects() {
-        return prospectService.getProspectsAddedYesterday();
+    public List<Personnal> getNewPersonnals() {
+        return personnalService.getPersonnalsAddedYesterday();
     }
 }
 ```
@@ -90,27 +90,27 @@ public class EmailService {
 }
 ```
 
-## Configurer la tâche planifiée : Implémentez un planificateur pour récupérer les nouveaux prospects et envoyer un email chaque jour de la semaine sauf le samedi et le dimanche.
+## Configurer la tâche planifiée : Implémentez un planificateur pour récupérer les nouveaux personnals et envoyer un email chaque jour de la semaine sauf le samedi et le dimanche.
 
 ```java
 @Component
 public class ScheduledTasks {
 
     @Autowired
-    private ProspectService prospectService;
+    private PersonnalService personnalService;
 
     @Autowired
     private EmailService emailService;
 
     @Scheduled(cron = "0 0 8 * * MON-FRI") // S'exécute à 8h00 du lundi au vendredi
-    public void reportNewProspects() {
-        List<Prospect> newProspects = prospectService.getProspectsAddedYesterday();
-        if (!newProspects.isEmpty()) {
-            StringBuilder emailContent = new StringBuilder("Nouveaux prospects ajoutés hier :\n\n");
-            for (Prospect prospect : newProspects) {
-                emailContent.append(prospect.toString()).append("\n");
+    public void reportNewPersonnals() {
+        List<Personnal> newPersonnals = personnalService.getPersonnalsAddedYesterday();
+        if (!newPersonnals.isEmpty()) {
+            StringBuilder emailContent = new StringBuilder("Nouveaux personnals ajoutés hier :\n\n");
+            for (Personnal personnal : newPersonnals) {
+                emailContent.append(personnal.toString()).append("\n");
             }
-            emailService.sendEmail("recipient@example.com", "Rapport des nouveaux prospects", emailContent.toString());
+            emailService.sendEmail("recipient@example.com", "Rapport des nouveaux personnals", emailContent.toString());
         }
     }
 }

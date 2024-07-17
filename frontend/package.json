@@ -1,5 +1,5 @@
 {
-  "name": "epsyl-prospects-service-front",
+  "name": "gestion-personnel-front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:epsyl_prospects_service-front": "node dist/epsyl_prospects_service-front/server/server.mjs",
+    "serve:ssr:gestion-personnel-front": "node dist/gestion-personnel-front/server/server.mjs",
     "lint": "lint",
     "e2e": "ng e2e"
   },

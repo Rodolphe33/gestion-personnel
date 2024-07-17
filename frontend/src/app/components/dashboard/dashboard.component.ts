@@ -8,7 +8,7 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 
 @Component({
-  selector: 'eps-dashboard',
+  selector: 'gtper-dashboard',
   standalone: true,
   imports: [
     CommonModule,

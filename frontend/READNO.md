@@ -3,8 +3,8 @@
 - prod: http://localhost:8008/api/v
 
 ## Route
-- prospect: **/prospect**
-  - GET: **/allProspects**
+- personnal: **/personnal**
+  - GET: **/allPersonnals**
   - POST: **/save**
   - PUT: **/edit/{id}**
   - DELETE: **/delete/{id}**

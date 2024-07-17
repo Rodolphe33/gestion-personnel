@@ -1,10 +1,10 @@
 import { NgIf } from '@angular/common';
 import { Directive, inject, OnInit } from '@angular/core';
-import { AuthService } from '@eps/services/auth/auth.service';
-import { IdentityService } from '@eps/services/auth/identity.service';
+import { AuthService } from '@gtper/services/auth/auth.service';
+import { IdentityService } from '@gtper/services/auth/identity.service';
 
 @Directive({
-  selector: '[epsIfAdmin]',
+  selector: '[gtper-IfAdmin]',
   standalone: true,
   hostDirectives: [{
     directive: NgIf

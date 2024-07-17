@@ -3,11 +3,11 @@
   <p-confirmDialog />
   <p-toolbar styleClass="mb-2 gap-2">
     <ng-template pTemplate="end">
-      <p-button label="Ajouter un prospect" icon="pi pi-plus" class="p-button-success mr-2"
-        (click)="newProspect()"></p-button>
+      <p-button label="Ajouter un personnel" icon="pi pi-plus" class="p-button-success mr-2"
+        (click)="newPersonnal()"></p-button>
     </ng-template>
   </p-toolbar>
-  <p-table [value]="prospects" dataKey="_id" editMode="row" [paginator]="true" [rows]="20"
+  <p-table [value]="personnals" dataKey="_id" editMode="row" [paginator]="true" [rows]="20"
     [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped" [expandedRowKeys]="expandedRows" >
     <ng-template pTemplate="header">
       <tr>
@@ -28,43 +28,43 @@
         <th style="width: 5px"></th> <!-- bouton archive -->
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-prospect let-ri="rowIndex" let-editing="editing">
-      <tr [pEditableRow]="prospect">
+    <ng-template pTemplate="body" let-personnal let-ri="rowIndex" let-editing="editing">
+      <tr [pEditableRow]="personnal">
         <td>
-          {{ prospect.trigramme }}
+          {{ personnal.trigramme }}
         </td>
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input type="text" [(ngModel)]="prospect.lastName" />
+              <input type="text" [(ngModel)]="personnal.lastName" />
             </ng-template>
             <ng-template pTemplate="output">
-              {{ prospect.lastName }}
+              {{ personnal.lastName }}
             </ng-template>
           </p-cellEditor>
         </td>
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input type="text" [(ngModel)]="prospect.firstName" />
+              <input type="text" [(ngModel)]="personnal.firstName" />
             </ng-template>
             <ng-template pTemplate="output">
-              {{ prospect.firstName }}
+              {{ personnal.firstName }}
             </ng-template>
           </p-cellEditor>
         </td>
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input type="text" [(ngModel)]="prospect.profil" />
+              <input type="text" [(ngModel)]="personnal.profil" />
             </ng-template>
             <ng-template pTemplate="output">
-              {{ prospect.profil }}
+              {{ personnal.profil }}
             </ng-template>
           </p-cellEditor>
         </td>
         <td>
-          @if(prospect.cv !== null && prospect.cv !== undefined) {
+          @if(personnal.cv !== null && personnal.cv !== undefined) {
           <span>
             <i class="pi pi-file-check" style="color: greenyellow"></i>
           </span>
@@ -77,20 +77,20 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <p-calendar [(ngModel)]="prospect.dateContact" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
+              <p-calendar [(ngModel)]="personnal.dateContact" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
             </ng-template>
             <ng-template pTemplate="output">
-              {{ prospect.dateContact | date : "dd-MM-yyyy" }}
+              {{ personnal.dateContact | date : "dd-MM-yyyy" }}
             </ng-template>
           </p-cellEditor>
         </td>
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <p-calendar [(ngModel)]="prospect.dateEntretien" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
+              <p-calendar [(ngModel)]="personnal.dateEntretien" dateFormat="dd-MM-yyyy" appendTo="body" [locale]="locale"></p-calendar>
             </ng-template>
             <ng-template pTemplate="output">
-              {{ prospect.dateEntretien | date : "dd-MM-yyyy" }}
+              {{ personnal.dateEntretien | date : "dd-MM-yyyy" }}
             </ng-template>
           </p-cellEditor>
         </td>
@@ -102,7 +102,7 @@
               </p-fileUpload>
             </ng-template>
             <ng-template pTemplate="output">
-              @if(prospect.grille !== null && prospect.grille !== undefined) {
+              @if(personnal.grille !== null && personnal.grille !== undefined) {
               <span>
                 <i class="pi pi-file-check" style="color: greenyellow"></i>
               </span>
@@ -115,7 +115,7 @@
           </p-cellEditor>
         </td>
         <td>
-          @if(prospect.bum !== null && prospect.bum !== undefined) {
+          @if(personnal.bum !== null && personnal.bum !== undefined) {
           <span>
             <i class="pi pi-thumbs-up-fill" style="color: greenyellow"></i>
           </span>
@@ -128,16 +128,16 @@
           }
         </td>
         <td>
-          <span>{{ fullNameBum(prospect.bum) }}</span>
+          <span>{{ fullNameBum(personnal.bum) }}</span>
         </td>
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input type="number" [(ngModel)]="prospect.pr" />
+              <input type="number" [(ngModel)]="personnal.pr" />
             </ng-template>
             <ng-template pTemplate="output">
-              @if(prospect.pr) {
-              <p-tag severity="success" value="{{ prospect.pr | currency : 'EUR' }}"></p-tag>
+              @if(personnal.pr) {
+              <p-tag severity="success" value="{{ personnal.pr | currency : 'EUR' }}"></p-tag>
               } @else {
               <span class="noData"></span>
               }
@@ -152,7 +152,7 @@
               </p-fileUpload>
             </ng-template>
             <ng-template pTemplate="output">
-              @if(prospect.dc !== null && prospect.dc !== undefined) {
+              @if(personnal.dc !== null && personnal.dc !== undefined) {
               <span>
                 <i class="pi pi-file-check" style="color: greenyellow"></i>
               </span>
@@ -165,28 +165,28 @@
           </p-cellEditor>
         </td>
         <td>
-          <p-button type="button" pRipple [pRowToggler]="prospect" [text]="true" [rounded]="true" [plain]="true"
+          <p-button type="button" pRipple [pRowToggler]="personnal" [text]="true" [rounded]="true" [plain]="true"
             icon="pi pi-shop" />
         </td>
         <td>
           <div class="flex align-items-center justify-content-center gap-2">
             @if(!editing) {
             <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-            <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEdit(prospect)"
+            <button pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEdit(personnal)"
               class="p-button-rounded p-button-text"></button>
             } @else {
             <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
-            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(prospect)"
+            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(personnal)"
               class="p-button-rounded p-button-text p-button-success mr-2"></button>
             <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
             <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-              (click)="onRowEditCancel(prospect, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+              (click)="onRowEditCancel(personnal, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
             }
           </div>
         </td>
         <td>
           <div class="flex justify-content-center gap-2">
-            <p-button severity="danger" icon="pi pi-trash" (click)="archiveProspect($event, prospect)"
+            <p-button severity="danger" icon="pi pi-trash" (click)="archivePersonnal($event, personnal)"
               class="p-button-rounded p-button-text">
             </p-button>
           </div>
@@ -194,12 +194,12 @@
       </tr>
     </ng-template>
     <!-- Tableau push/qualif -->
-    <ng-template pTemplate="rowexpansion" let-prospect>
+    <ng-template pTemplate="rowexpansion" let-personnal>
       <tr>
         <td colspan="6"></td>
         <td colspan="9">
           <div class="p-3">
-            <p-table [value]="prospect.pushQalif" dataKey="client" responsiveLayout="scroll">
+            <p-table [value]="personnal.pushQalif" dataKey="client" responsiveLayout="scroll">
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="client">Client <p-sortIcon field="client"></p-sortIcon></th>
@@ -263,7 +263,7 @@
                         class="p-button-rounded p-button-text p-button-success mr-2"></button>
                       <!-- eslint-disable-next-line @angular-eslint/template/elements-content -->
                       <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                        (click)="onRowExpandedEditCancel(prospect, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        (click)="onRowExpandedEditCancel(personnal, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                       }
                     </div>
                   </td>
@@ -282,22 +282,22 @@
   </p-table>
 </div>
 <!-- Dialog -->
-<p-dialog [style]="{ width: '600px' }" header="Ajouter un nouveau prospect" [modal]="true" [(visible)]="visible"
+<p-dialog [style]="{ width: '600px' }" header="Ajouter un nouveau personnal" [modal]="true" [(visible)]="visible"
   class="p-fluid">
-  <form #formProspect="ngForm">
+  <form #formPersonnal="ngForm">
     <div class="">
       <div class="flex gap-5 mt-1">
         <div class="field">
           <label for="lastName">Nom</label>
           <input pInputText type="text" id="lastName" name="lastName" [(ngModel)]="lastName"
             (ngModelChange)="generateTrigram()" required />
-          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && (formProspect.dirty || formProspect.touched)">Le nom est obligatoire.</small>
+          <small class="ng-dirty ng-invalid" *ngIf="formPersonnal.valid && (formPersonnal.dirty || formPersonnal.touched)">Le nom est obligatoire.</small>
         </div>
         <div class="field">
           <label for="firstName">Prénom</label>
           <input pInputText type="text" id="firstName" name="firstName" [(ngModel)]="firstName"
             (ngModelChange)="generateTrigram()" required />
-          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !firstName">Le prénom est
+          <small class="ng-dirty ng-invalid" *ngIf="formPersonnal.valid && !firstName">Le prénom est
             obligatoire.</small>
         </div>
       </div>
@@ -311,7 +311,7 @@
         <div class="field">
           <span class="font-bold block mb-2">Téléphone</span>
           <p-inputMask [(ngModel)]="phone" name="phone" placeholder="00 11 22 33 44" mask="99 99 99 99 99" required />
-          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !phone">Le numéro de téléphone est
+          <small class="ng-dirty ng-invalid" *ngIf="formPersonnal.valid && !phone">Le numéro de téléphone est
             obligatoire.</small>
         </div>
       </div>
@@ -319,12 +319,12 @@
         <div class="field">
           <label for="email">Email</label>
           <input type="text" pInputText id="email" name="email" [(ngModel)]="email" required />
-          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !email">L'email est obligatoire.</small>
+          <small class="ng-dirty ng-invalid" *ngIf="formPersonnal.valid && !email">L'email est obligatoire.</small>
         </div>
         <div class="field">
           <label for="profil">Profil</label>
           <input id="profil" pInputText [(ngModel)]="profil" name="profil" required />
-          <small class="ng-dirty ng-invalid" *ngIf="formProspect.valid && !profil">Le profil est
+          <small class="ng-dirty ng-invalid" *ngIf="formPersonnal.valid && !profil">Le profil est
             obligatoire.</small>
         </div>
       </div>

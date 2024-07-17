@@ -3,8 +3,8 @@ import { inject, Injectable } from "@angular/core";
 
 import { Observable } from "rxjs";
 
-import { environment } from "@eps/env/environment.dev";
-import { User } from "@eps/shared/models/user.model";
+import { environment } from "@gtper/env/environment.dev";
+import { User } from "@gtper/shared/models/user.model";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 <div class="layout-topbar">
-  <!-- <a class="layout-topbar-logo" [routerLink]="['/prospect']"> -->
-      <span>Epsyl Prospects Service</span>
+  <!-- <a class="layout-topbar-logo" [routerLink]="['/personnal']"> -->
+      <span>Gestion Personnel</span>
   <!-- </a> -->
   <!-- TODO Pour ajouter un bouton pour afficher/cacher un sidebar  -->
   <!-- <p-button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
@@ -13,12 +13,12 @@
 
   <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
       <p-button outlined="true"
-              [routerLink]="['/prospect']"
+              [routerLink]="['/personnal']"
               routerLinkActive="router-link-active"
-              pTooltip="Liste des prospects"
+              pTooltip="Liste des personnels"
               tooltipPosition="bottom"
-              label="Liste des prospects"
-              *ifAdmin />
+              label="Liste des personnals"
+              *ifAdmin /> v
       <p-button outlined="true"
               [routerLink]="['/user']"
               routerLinkActive="router-link-active"

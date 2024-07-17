@@ -23,10 +23,10 @@
       "dom"
     ],
     "paths": {
-      "@eps/components/*": ["./src/app/components/*"],
-      "@eps/shared/*": ["./src/app/shared/*"],
-      "@eps/service/*": ["./src/app/services/*"],
-      "@eps/env/*": ["./src/environments/*"],
+      "@gtper/components/*": ["./src/app/components/*"],
+      "@gtper/shared/*": ["./src/app/shared/*"],
+      "@gtper/service/*": ["./src/app/services/*"],
+      "@gtper/env/*": ["./src/environments/*"],
     }
   },
   "angularCompilerOptions": {

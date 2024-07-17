@@ -8,12 +8,12 @@
 		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.epsyl</groupId>
-	<artifactId>eps</artifactId>
+	<groupId>com.perso</groupId>
+	<artifactId>gtper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Epsyl Prospects Service</name>
-	<description>Outil de gestion des nouveaux prospects</description>
+	<name>Gestion personnel</name>
+	<description>Outil de gestion du personnels</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

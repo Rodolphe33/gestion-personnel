@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { environment } from "@eps/env/environment.dev";
-import { FileResponse } from "@eps/shared/models/file-response";
+import { environment } from "@gtper/env/environment.dev";
+import { FileResponse } from "@gtper/shared/models/file-response";
 import { Observable } from "rxjs";
 
 @Injectable({

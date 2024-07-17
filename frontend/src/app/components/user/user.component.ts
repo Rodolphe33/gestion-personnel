@@ -1,11 +1,11 @@
-import { User } from '@eps/shared/models/user.model';
+import { User } from '@gtper/shared/models/user.model';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { UserService } from '@eps/services/user/user.service';
+import { UserService } from '@gtper/services/user/user.service';
 import { TableModule } from 'primeng/table';
 
 @Component({
-  selector: 'eps-user',
+  selector: 'gtper-user',
   templateUrl: 'user.component.html',
   styleUrl: 'user.component.scss',
   standalone: true,

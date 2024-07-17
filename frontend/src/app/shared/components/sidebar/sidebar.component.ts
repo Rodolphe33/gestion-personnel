@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
-import { LayoutService } from '@eps/service/layout.service';
+import { LayoutService } from '@gtper/service/layout.service';
 
 @Component({
-  selector: 'eps-sidebar',
+  selector: 'gtper-sidebar',
   standalone: true,
   imports: [
     CommonModule,

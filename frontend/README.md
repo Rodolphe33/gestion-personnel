@@ -1,12 +1,12 @@
-# Epsyl Prospects Service (EPS)
+# Gestion Personnel (GTPER)
 
 ## Description
 
-Logiciel de gestion des prospects.
+Logiciel de gestion du personnels.
 
 ## Authors and acknowledgment
 
-* [Rodolphe Lassalle](rlassalle@epsyl-alcen.com)
+* [Rodolphe Lassalle](rlassalle.lassalle33@gmail.com)
 
 ## License
 

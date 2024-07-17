@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "epsyl_prospects_service-front": {
+    "gestion-personnel-front": {
       "projectType": "application",
       "i18n": { "sourceLocale": "fr" },
       "schematics": {
@@ -13,12 +13,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "eps",
+      "prefix": "gtper",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/epsyl_prospects_service-front",
+            "outputPath": "dist/gestion-personnel-front",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "epsyl_prospects_service-front:build:production"
+              "buildTarget": "gestion-personnel-front:build:production"
             },
             "development": {
-              "buildTarget": "epsyl_prospects_service-front:build:development"
+              "buildTarget": "gestion-personnel-front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "epsyl_prospects_service-front:build"
+            "buildTarget": "gestion-personnel-front:build"
           }
         },
         "test": {
@@ -116,11 +116,11 @@
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "epsyl_prospects_service-front:serve"
+            "devServerTarget": "gestion-personnel-front:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "epsyl_prospects_service-front:serve:production"
+              "devServerTarget": "gestion-personnel-front:serve:production"
             }
           }
         },
@@ -134,27 +134,27 @@
         "ct": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "epsyl_prospects_service-front:serve",
+            "devServerTarget": "gestion-personnel-front:serve",
             "watch": true,
             "headless": false,
             "testingType": "component"
           },
           "configurations": {
             "development": {
-              "devServerTarget": "epsyl_prospects_service-front:serve:development"
+              "devServerTarget": "gestion-personnel-front:serve:development"
             }
           }
         },
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "epsyl_prospects_service-front:serve",
+            "devServerTarget": "gestion-personnel-front:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "epsyl_prospects_service-front:serve:production"
+              "devServerTarget": "gestion-personnel-front:serve:production"
             }
           }
         }
