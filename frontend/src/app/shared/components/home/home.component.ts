@@ -48,7 +48,7 @@ export class HomeComponent implements OnDestroy {
           this.menuOutsideClickListener = this.renderer.listen(
             'document',
             'click',
-            (event) => {
+            (event: Event) => {
               const isOutsideClicked = !(
                 this.appTopbar.menuButton.nativeElement.isSameNode(
                   event.target
@@ -67,7 +67,7 @@ export class HomeComponent implements OnDestroy {
           this.profileMenuOutsideClickListener = this.renderer.listen(
             'document',
             'click',
-            (event) => {
+            (event: Event) => {
               const isOutsideClicked = !(
                 this.appTopbar.menu.nativeElement.isSameNode(event.target) ||
                 this.appTopbar.menu.nativeElement.contains(event.target) ||

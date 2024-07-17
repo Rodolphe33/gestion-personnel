@@ -21,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.perso.gtper.emailings.MailGrilleAdded;
 import com.perso.gtper.entities.Personnal;
 import com.perso.gtper.repositories.PersonnalRepository;
-import com.perso.gtper.services.PersonnalService;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonnalServiceTest {

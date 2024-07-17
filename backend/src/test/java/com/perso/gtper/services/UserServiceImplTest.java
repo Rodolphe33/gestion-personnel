@@ -22,7 +22,6 @@ import com.perso.gtper.entities.User;
 import com.perso.gtper.enums.ERole;
 import com.perso.gtper.repositories.RoleRepository;
 import com.perso.gtper.repositories.UserRepository;
-import com.perso.gtper.services.UserServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
