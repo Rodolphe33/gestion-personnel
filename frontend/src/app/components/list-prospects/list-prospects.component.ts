@@ -233,7 +233,7 @@ export class ListPersonnalsComponent implements OnInit {
 
     const data: confirMessage = {
       target: event.target as EventTarget,
-      message: 'Etès-vous sûre de vouloir archiver ce prospet ?',
+      message: 'Etès-vous sûre de vouloir archiver ce personnel ?',
       header: 'Confirmation',
       rejectButtonStyleClass:"p-button-text",
       acceptSeverity: 'success',
